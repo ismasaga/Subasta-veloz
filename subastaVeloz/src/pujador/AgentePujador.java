@@ -24,4 +24,13 @@ public class AgentePujador extends Agent{
 		addBehaviour(new PujadorBehaviour());
 	}
 	
+	public void takeDown() {
+		try {
+			DFService.deregister(this);
+		} catch (FIPAException e) {
+			System.out.println(e.getMessage());
+		}
+		System.out.println(getAID().getName() + " ha terminado");
+	}
+	
 }
