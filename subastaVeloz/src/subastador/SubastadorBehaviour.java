@@ -56,14 +56,18 @@ public class SubastadorBehaviour extends TickerBehaviour {
 				MessageTemplate mt = MessageTemplate.and(MessageTemplate.MatchConversationId("book-trade"), MessageTemplate.MatchInReplyTo(message.getReplyWith()));
 				
 				int replyCount = 0; 
+				int interestedCount = 0;
 				
 				do {
 					ACLMessage reply = myAgent.receive(mt);
 					if (reply != null) {
 						String content = reply.getContent();
-						if (!haveWinner && content.equals("interested")) {
-							haveWinner = true;
-							winner = reply.getSender();
+						if (content.equals("interested")){
+							if (!haveWinner) {
+								haveWinner = true;
+								winner = reply.getSender();
+							}
+							interestedCount ++;
 						}
 						replyCount ++;
 					}
