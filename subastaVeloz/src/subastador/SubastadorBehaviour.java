@@ -15,10 +15,12 @@ import java.util.ArrayList;
 public class SubastadorBehaviour extends TickerBehaviour {
 	
 	private Float price;
+	private Float incremento;
 
-	public SubastadorBehaviour(Agent a, int period, float price) {
+	public SubastadorBehaviour(Agent a, int period, float price, float incremento) {
 		super(a, period);
 		this.price = price;
+		this.incremento = incremento;
 	}
 
 	/**
@@ -94,6 +96,25 @@ public class SubastadorBehaviour extends TickerBehaviour {
 					}
 				}
 				myAgent.send(message);
+				
+				boolean ended = false;
+				
+				if (interestedCount == 0) {
+					//No hay interesados en la ronda actual
+					if (winner != null) {
+						System.out.println("Subasta ganada por " + winner.getLocalName());
+						ended = true;
+					}
+				}
+				else if (interestedCount == 1) {
+					//Sólo hay un interesado en la ronda actual
+					System.out.println("Subasta ganada por " + winner.getLocalName());
+					ended = true;
+				}
+				else {
+					//hay más interesados en la ronda actual
+					price += incremento;
+				}
 			}	
 		} catch (FIPAException e) {
 			System.out.println(e.getMessage());
