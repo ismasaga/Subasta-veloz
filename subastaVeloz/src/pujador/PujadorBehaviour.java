@@ -34,6 +34,7 @@ public class PujadorBehaviour extends CyclicBehaviour {
 					}
 					else {
 						reply.setContent("not interested");
+						myAgent.doDelete();
 					}
 				}
 				else {
