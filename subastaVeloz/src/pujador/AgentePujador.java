@@ -9,7 +9,7 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 @SuppressWarnings("serial")
 public class AgentePujador extends Agent{
 
-	private Float maxPrice = (float)20.0;
+	private Float maxPrice;
 	
 	public void setup() {
 		DFAgentDescription dfd = new DFAgentDescription();
@@ -22,6 +22,14 @@ public class AgentePujador extends Agent{
 			DFService.register(this, dfd);
 		} catch (FIPAException e) {
 			System.out.println(e.getMessage());
+		}
+		Object[] args = getArguments();
+		if (args != null && args.length == 2) {
+			maxPrice = Float.parseFloat((String) args[1]);
+			System.out.println(String.valueOf(maxPrice));
+		}
+		else {
+			System.out.println("Número incorrecto de argumentos");
 		}
 		addBehaviour(new PujadorBehaviour(maxPrice));
 	}

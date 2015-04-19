@@ -123,7 +123,7 @@ public class SubastadorBehaviour extends TickerBehaviour {
 					message.setConversationId("book-trade");
 					message.setContent("Subasta finalizada. El libro se vende por " + String.valueOf(price));
 					for (AID buyer : buyerAgents) {
-						if (buyer != winner) {
+						if (!buyer.equals(winner)) {
 							message.addReceiver(buyer);
 						}
 					}

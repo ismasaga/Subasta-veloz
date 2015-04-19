@@ -5,7 +5,7 @@ import jade.core.Agent;
 @SuppressWarnings("serial")
 public class AgenteSubastador extends Agent{
 	
-	private Float price = (float) 30.0;
+	private Float price = (float) 60.0;
 	private Float incremento = (float) 5.0;
 	
 	protected void setup() {
