@@ -1,19 +1,50 @@
 package pujador;
 
+import jade.core.AID;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
 
 @SuppressWarnings("serial")
 public class PujadorBehaviour extends CyclicBehaviour {
 
-	
-	
+	private Float maxPrice;
+
+	public PujadorBehaviour(Float maxPrice) {
+		super();
+		this.maxPrice = maxPrice;
+	}
+
+
 	@Override
 	public void action() {
-		ACLMessage message = myAgent.receive();
-		if (message != null) {
-			String content = message.getContent();
-			System.out.println(content);
-		}
+		MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.CFP);
+		ACLMessage message = null;
+		ACLMessage reply = null;
+			message = myAgent.receive(mt);
+			if (message != null) {
+				Float price = Float.parseFloat(message.getContent());
+				AID buyer = message.getSender();
+				reply = message.createReply();
+				reply.setPerformative(ACLMessage.PROPOSE);
+				reply.setConversationId("book-trade");
+				if (price != null && price > 0){
+					if (price <= maxPrice) {
+						reply.setContent("interested");
+					}
+					else {
+						reply.setContent("not interested");
+					}
+				}
+				else {
+					reply.setPerformative(ACLMessage.NOT_UNDERSTOOD);
+					reply.setContent("Precio no válido");
+				}
+				reply.setSender(myAgent.getAID());
+				reply.addReceiver(buyer);
+				myAgent.send(reply);
+				
+			}
+		
 	}
 }

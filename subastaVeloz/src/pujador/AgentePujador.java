@@ -9,6 +9,8 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 @SuppressWarnings("serial")
 public class AgentePujador extends Agent{
 
+	private Float maxPrice = (float)20.0;
+	
 	public void setup() {
 		DFAgentDescription dfd = new DFAgentDescription();
 		dfd.setName(getAID());
@@ -21,7 +23,7 @@ public class AgentePujador extends Agent{
 		} catch (FIPAException e) {
 			System.out.println(e.getMessage());
 		}
-		addBehaviour(new PujadorBehaviour());
+		addBehaviour(new PujadorBehaviour(maxPrice));
 	}
 	
 	public void takeDown() {
