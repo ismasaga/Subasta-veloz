@@ -27,7 +27,7 @@ public class PujadorBehaviour extends CyclicBehaviour {
 				AID buyer = message.getSender();
 				reply = message.createReply();
 				reply.setPerformative(ACLMessage.PROPOSE);
-				reply.setConversationId("book-trade");
+				reply.setConversationId("Don Quijote");
 				if (price != null && price > 0){
 					if (price <= maxPrice) {
 						reply.setContent("interested");
@@ -43,8 +43,10 @@ public class PujadorBehaviour extends CyclicBehaviour {
 				}
 				reply.setSender(myAgent.getAID());
 				reply.addReceiver(buyer);
-				myAgent.send(reply);
-				
+				myAgent.send(reply);	
+			}
+			else {
+				block();
 			}
 		
 	}
