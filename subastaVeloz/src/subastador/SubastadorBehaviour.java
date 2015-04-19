@@ -115,6 +115,33 @@ public class SubastadorBehaviour extends TickerBehaviour {
 					//hay más interesados en la ronda actual
 					price += incremento;
 				}
+				
+				if (ended == true) {
+					/*Informar a todos los participantes que no han ganado la subasta*/
+					message = new ACLMessage(ACLMessage.INFORM);
+					message.setSender(myAgent.getAID());
+					message.setConversationId("book-trade");
+					message.setContent("Subasta finalizada. El libro se vende por " + String.valueOf(price));
+					for (AID buyer : buyerAgents) {
+						if (buyer != winner) {
+							message.addReceiver(buyer);
+						}
+					}
+					myAgent.send(message);
+					
+					/***************************************************************/
+					
+					/*Solicitar pago al ganador de la subasta*/
+					message = new ACLMessage(ACLMessage.REQUEST);
+					message.setSender(myAgent.getAID());
+					message.setConversationId("book-trade");
+					message.setContent("Has ganado la subasta por " + String.valueOf(price) + " por favor, realiza el pago");
+					message.addReceiver(winner);
+					myAgent.send(message);
+					/******************************************/
+					
+					myAgent.doDelete();
+				}
 			}	
 		} catch (FIPAException e) {
 			System.out.println(e.getMessage());
