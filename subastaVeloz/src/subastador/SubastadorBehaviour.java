@@ -26,6 +26,7 @@ public class SubastadorBehaviour extends TickerBehaviour {
 	 */
 	private static final long serialVersionUID = 1L;
 	private ArrayList <AID> buyerAgents;
+	private AID winner;
 
 	@Override
 	protected void onTick() {
@@ -34,7 +35,6 @@ public class SubastadorBehaviour extends TickerBehaviour {
 		sd.setType("book-buying");
 		template.addServices(sd);
 		boolean haveWinner = false;
-		AID winner = null;
 		try {
 			DFAgentDescription[] result = DFService.search(myAgent, template);
 			System.out.println("BUSQUEDA REALIZADA"); 
