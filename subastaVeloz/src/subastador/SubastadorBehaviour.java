@@ -16,11 +16,13 @@ public class SubastadorBehaviour extends TickerBehaviour {
 	
 	private Float price;
 	private Float incremento;
+	private String book;
 
-	public SubastadorBehaviour(Agent a, int period, float price, float incremento) {
+	public SubastadorBehaviour(Agent a, int period, String book, float price, float incremento) {
 		super(a, period);
 		this.price = price;
 		this.incremento = incremento;
+		this.book = book;
 	}
 
 	/**
@@ -34,7 +36,7 @@ public class SubastadorBehaviour extends TickerBehaviour {
 	protected void onTick() {
 		DFAgentDescription template = new DFAgentDescription();
 		ServiceDescription sd = new ServiceDescription();
-		sd.setType("book-buying");
+		sd.setType(book);
 		template.addServices(sd);
 		boolean haveWinner = false;
 		try {
