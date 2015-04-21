@@ -2,27 +2,22 @@ package subastador;
 
 import jade.core.Agent;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import book.Book;
 
 @SuppressWarnings("serial")
 public class AgenteSubastador extends Agent{
 	
+	private ArrayList <Book> books;
 	private Float incremento = (float) 5.0;
-	private HashMap <String, Float> books;
-	
-	
-	
 	
 	protected void setup() {
-		books.put("Don Quijote", (float)20.0);
-		books.put("Eragon", (float)15.0);
-		books.put("El nombre de la rosa", (float)12.0);
+		books.add(new Book ("Don Quijote", (float)10.0, (float)2.0));
 		
 		System.out.println("Hola! " + getAID().getName() + " está listo");
-		for (String book : books.keySet()){
-			addBehaviour(new SubastadorBehaviour(this, 10000, book, books.get(book), incremento));
+		for (Book book : books){
+			addBehaviour(new SubastadorBehaviour(this, 10000, book));
 		}
-		
 	}
 	
 	protected void takeDown() {
