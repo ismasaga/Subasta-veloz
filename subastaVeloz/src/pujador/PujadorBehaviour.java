@@ -47,7 +47,6 @@ public class PujadorBehaviour extends CyclicBehaviour {
 					else {
 						reply.setContent("not interested");
 						System.out.println(myAgent.getName() + " rechaza pujar por " + message.getConversationId() + " por " + message.getContent());
-						books.remove(new Book(message.getConversationId()));
 					}
 				}
 				else {
@@ -58,10 +57,10 @@ public class PujadorBehaviour extends CyclicBehaviour {
 				myAgent.send(reply);
 			}
 			
-			mt = MessageTemplate.MatchPerformative(ACLMessage.INFORM);
+			mt = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
 			message = myAgent.receive(mt);
 			if (message != null) {
-				//Current bidder did not win the auction
+				//Current bidder won desired book
 				if (books.contains(new Book(message.getConversationId()))) {
 					books.remove(new Book(message.getConversationId()));
 				}
