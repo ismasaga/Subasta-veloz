@@ -19,11 +19,11 @@ public class SubastadorBehaviour extends TickerBehaviour {
 	private Float price;
 	private Float increase;
 
-	public SubastadorBehaviour(Agent a, int period, Book book) {
+	public SubastadorBehaviour(Agent a, int period, Book book, Float increase) {
 		super(a, period);
 		this.book = book.getTitle();
 		this.price = book.getPrice();
-		this.increase = book.getIncrease();
+		this.increase = increase;
 	}
 
 	/**
@@ -55,10 +55,10 @@ public class SubastadorBehaviour extends TickerBehaviour {
 				for (AID buyer : buyerAgents) {
 					message.addReceiver(buyer);
 				}
-				message.setConversationId("book-trade");
+				message.setConversationId(book);
 				message.setReplyWith("interested" + System.currentTimeMillis());
 				myAgent.send(message);
-				MessageTemplate mt = MessageTemplate.and(MessageTemplate.MatchConversationId("book-trade"), MessageTemplate.MatchInReplyTo(message.getReplyWith()));
+				MessageTemplate mt = MessageTemplate.and(MessageTemplate.MatchConversationId(book), MessageTemplate.MatchInReplyTo(message.getReplyWith()));
 				
 				int replyCount = 0; 
 				int interestedCount = 0;
@@ -72,6 +72,7 @@ public class SubastadorBehaviour extends TickerBehaviour {
 								haveWinner = true;
 								winner = reply.getSender();
 							}
+							System.out.println(reply.getSender().getName() + "acepta pujar por " + message.getConversationId() + " por " + price + " euros");
 							interestedCount ++;
 						}
 						replyCount ++;
@@ -85,14 +86,14 @@ public class SubastadorBehaviour extends TickerBehaviour {
 				message = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
 				message.setSender(myAgent.getAID());
 				message.addReceiver(winner);
-				message.setContent("Ronda ganada. Precio: " + price + " euros");
-				message.setConversationId("book-trade");
+				message.setContent("Ronda ganada de " + book + ". Precio: " + price + " euros");
+				message.setConversationId(book);
 				myAgent.send(message);
 				
 				message = new ACLMessage(ACLMessage.REJECT_PROPOSAL);
 				message.setSender(myAgent.getAID());
-				message.setContent("No has ganado esta ronda");
-				message.setConversationId("book-trade");
+				message.setContent("No has ganado esta ronda de " + book);
+				message.setConversationId(book);
 				for (AID buyer : buyerAgents) {
 					if (!buyer.equals(winner)){
 						message.addReceiver(buyer);
@@ -105,13 +106,13 @@ public class SubastadorBehaviour extends TickerBehaviour {
 				if (interestedCount == 0) {
 					//No hay interesados en la ronda actual
 					if (winner != null) {
-						System.out.println("Subasta ganada por " + winner.getLocalName());
+						System.out.println("Subasta de " + book + " ganada por " + winner.getLocalName() + " por haber ganado la ronda anterior");
 						ended = true;
 					}
 				}
 				else if (interestedCount == 1) {
 					//Sólo hay un interesado en la ronda actual
-					System.out.println("Subasta ganada por " + winner.getLocalName());
+					System.out.println("Subasta de " + book + " ganada por " + winner.getLocalName() + " por ser el único interesado en la ronda actual");
 					ended = true;
 				}
 				else {
@@ -123,8 +124,8 @@ public class SubastadorBehaviour extends TickerBehaviour {
 					/*Informar a todos los participantes que no han ganado la subasta*/
 					message = new ACLMessage(ACLMessage.INFORM);
 					message.setSender(myAgent.getAID());
-					message.setConversationId("book-trade");
-					message.setContent("Subasta finalizada. El libro se vende por " + String.valueOf(price));
+					message.setConversationId(book);
+					message.setContent("Subasta de " + book + " finalizada. El libro se vende por " + String.valueOf(price));
 					for (AID buyer : buyerAgents) {
 						if (!buyer.equals(winner)) {
 							message.addReceiver(buyer);
@@ -137,13 +138,12 @@ public class SubastadorBehaviour extends TickerBehaviour {
 					/*Solicitar pago al ganador de la subasta*/
 					message = new ACLMessage(ACLMessage.REQUEST);
 					message.setSender(myAgent.getAID());
-					message.setConversationId("book-trade");
-					message.setContent("Has ganado la subasta por " + String.valueOf(price) + " por favor, realiza el pago");
+					message.setConversationId(book);
+					message.setContent("Has ganado la subasta de " + book + " por " + String.valueOf(price) + " por favor, realiza el pago");
 					message.addReceiver(winner);
 					myAgent.send(message);
 					/******************************************/
-					
-					myAgent.doDelete();
+					this.stop();
 				}
 			}	
 		} catch (FIPAException e) {

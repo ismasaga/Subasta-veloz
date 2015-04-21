@@ -6,10 +6,14 @@ import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 
+import java.util.ArrayList;
+
+import book.Book;
+
 @SuppressWarnings("serial")
 public class AgentePujador extends Agent{
 
-	private Float maxPrice;
+	private ArrayList<Book> books;
 	
 	public void setup() {
 		DFAgentDescription dfd = new DFAgentDescription();
@@ -18,20 +22,21 @@ public class AgentePujador extends Agent{
 		sd.setType("book-buying");
 		sd.setName("JADE-book-trading");
 		dfd.addServices(sd);
+		books = new ArrayList<>();
 		try {
 			DFService.register(this, dfd);
 		} catch (FIPAException e) {
 			System.out.println(e.getMessage());
 		}
 		Object[] args = getArguments();
-		if (args != null && args.length == 2) {
-			maxPrice = Float.parseFloat((String) args[1]);
-			System.out.println(String.valueOf(maxPrice));
+		if (args != null && args.length % 2 == 0 && args.length >= 2) {
+			for (int i = 0; i < args.length; i+=2)
+				books.add(new Book((String)args[i], Float.parseFloat((String) args[i+1])));
 		}
 		else {
 			System.out.println("Número incorrecto de argumentos");
 		}
-		addBehaviour(new PujadorBehaviour(maxPrice));
+		addBehaviour(new PujadorBehaviour(books));
 	}
 	
 	public void takeDown() {
