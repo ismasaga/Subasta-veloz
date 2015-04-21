@@ -1,6 +1,7 @@
 package subastador;
 
 import jade.core.AID;
+import book.Book;
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
 import jade.domain.DFService;
@@ -14,15 +15,15 @@ import java.util.ArrayList;
 
 public class SubastadorBehaviour extends TickerBehaviour {
 	
-	private Float price;
-	private Float incremento;
 	private String book;
+	private Float price;
+	private Float increase;
 
-	public SubastadorBehaviour(Agent a, int period, String book, float price, float incremento) {
+	public SubastadorBehaviour(Agent a, int period, Book book) {
 		super(a, period);
-		this.price = price;
-		this.incremento = incremento;
-		this.book = book;
+		this.book = book.getTitle();
+		this.price = book.getPrice();
+		this.increase = book.getIncrease();
 	}
 
 	/**
@@ -36,7 +37,7 @@ public class SubastadorBehaviour extends TickerBehaviour {
 	protected void onTick() {
 		DFAgentDescription template = new DFAgentDescription();
 		ServiceDescription sd = new ServiceDescription();
-		sd.setType(book);
+		sd.setType("book-buying");
 		template.addServices(sd);
 		boolean haveWinner = false;
 		try {
@@ -115,7 +116,7 @@ public class SubastadorBehaviour extends TickerBehaviour {
 				}
 				else {
 					//hay más interesados en la ronda actual
-					price += incremento;
+					price += increase;
 				}
 				
 				if (ended == true) {
