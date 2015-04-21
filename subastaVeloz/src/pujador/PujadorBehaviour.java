@@ -57,9 +57,17 @@ public class PujadorBehaviour extends CyclicBehaviour {
 				reply.setSender(myAgent.getAID());
 				myAgent.send(reply);
 			}
-			if (books.isEmpty()){
-				myAgent.doDelete();
+			
+			mt = MessageTemplate.MatchPerformative(ACLMessage.INFORM);
+			message = myAgent.receive(mt);
+			if (message != null) {
+				//Current bidder did not win the auction
+				if (books.contains(new Book(message.getConversationId()))) {
+					books.remove(new Book(message.getConversationId()));
+				}
 			}
-		//TODO kill agent if no more books to buy
+			else {
+				block();
+			}
 	}
 }
