@@ -20,7 +20,6 @@ public class AgenteSubastador extends Agent{
 		for (Book book : books){
 			addBehaviour(new SubastadorBehaviour(this, 10000, book, increase));
 		}
-		//TODO kill when all behaviours finish
 	}
 	
 	protected void takeDown() {
