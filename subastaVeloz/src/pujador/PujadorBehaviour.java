@@ -24,9 +24,9 @@ public class PujadorBehaviour extends CyclicBehaviour {
 			message = myAgent.receive(mt);
 			if (message != null) {
 				Float price = Float.parseFloat(message.getContent());
+				AID buyer = message.getSender();
 				reply = message.createReply();
 				reply.setPerformative(ACLMessage.PROPOSE);
-				reply.setConversationId("Don Quijote");
 				if (price != null && price > 0){
 					if (price <= maxPrice) {
 						reply.setContent("interested");
@@ -41,10 +41,9 @@ public class PujadorBehaviour extends CyclicBehaviour {
 					reply.setContent("Precio no válido");
 				}
 				reply.setSender(myAgent.getAID());
-				myAgent.send(reply);	
-			}
-			else {
-				block();
+				reply.addReceiver(buyer);
+				myAgent.send(reply);
+				
 			}
 		
 	}
