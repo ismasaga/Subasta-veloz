@@ -1,11 +1,12 @@
+package book;
 
 public class Book {
 	private String title;
-	private Float price;
-	private Float increase;
+	private float price;
+	private float increase;
 	private Integer quantity;
 	
-	public Book (String title, Float price, Float increase, Integer quantity) {
+	public Book (String title, float price, float increase, Integer quantity) {
 		this.title = title;
 		this.price = price;
 		this.increase = increase;
