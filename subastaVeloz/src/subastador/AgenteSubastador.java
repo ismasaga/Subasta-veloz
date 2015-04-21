@@ -9,7 +9,6 @@ import book.Book;
 public class AgenteSubastador extends Agent{
 	
 	private ArrayList <Book> books;
-	private Float incremento = (float) 5.0;
 	
 	protected void setup() {
 		books.add(new Book ("Don Quijote", (float)10.0, (float)2.0));
