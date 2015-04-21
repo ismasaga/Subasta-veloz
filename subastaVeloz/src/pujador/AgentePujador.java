@@ -36,6 +36,10 @@ public class AgentePujador extends Agent{
 		else {
 			System.out.println("Número incorrecto de argumentos");
 		}
+		
+		for (Book book : books) {
+			System.out.println("Pujando por " + book.getTitle() + "por un máximo de " + book.getPrice());
+		}
 		addBehaviour(new PujadorBehaviour(books));
 	}
 	
