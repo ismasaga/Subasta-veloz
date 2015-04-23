@@ -68,5 +68,11 @@ public class PujadorBehaviour extends CyclicBehaviour {
 			else {
 				block();
 			}
+			
+			mt = MessageTemplate.MatchPerformative(ACLMessage.INFORM);
+			message = myAgent.receive(mt);
+			if (message != null) {
+				System.out.println(myAgent.getName() + ": no he ganado la subasta de " + message.getConversationId());
+			}
 	}
 }
