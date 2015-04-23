@@ -6,7 +6,6 @@ import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import book.Book;
@@ -43,7 +42,7 @@ public class AgentePujador extends Agent{
 			System.out.println("Pujando por " + book.getTitle() + " por un máximo de " + book.getPrice() + " euros");
 		}
 		addBehaviour(new PujadorBehaviour(this, books));
-		pujadorGUI = new PujadorGUI(books);
+		pujadorGUI = new PujadorGUI(books, this);
 		pujadorGUI.setVisible(true);
 	}
 	
@@ -57,8 +56,19 @@ public class AgentePujador extends Agent{
 	}
 	
 	public void changeStatus (Book book, String status) {
-		books.put(book, status);
-		pujadorGUI.getModel().changeStatus(book, status);
+		if (books.containsKey(book)) {
+			books.put(book, status);
+			pujadorGUI.getModel().changeStatus(book, status);
+		}
 	}
 	
+	public void addBook (String title, Float maxPrice) {
+		Book book = new Book(title, maxPrice);
+		books.put(book, "Esperando subasta");
+		pujadorGUI.getModel().changeStatus(book, books.get(book));
+	}
+	
+	public HashMap<Book, String> getBooks() {
+		return books;
+	}
 }

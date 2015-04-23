@@ -24,6 +24,7 @@ public class PujadorBehaviour extends CyclicBehaviour {
 
 	@Override
 	public void action() {
+		this.books = new ArrayList<>(pujador.getBooks().keySet());
 		MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.CFP);
 		ACLMessage message = null;
 		ACLMessage reply = null;
@@ -77,7 +78,9 @@ public class PujadorBehaviour extends CyclicBehaviour {
 			mt = MessageTemplate.MatchPerformative(ACLMessage.INFORM);
 			message = myAgent.receive(mt);
 			if (message != null) {
-				pujador.changeStatus(new Book(message.getConversationId()), "No ganada");
+				if (books.contains(new Book(message.getConversationId()))) {
+					pujador.changeStatus(new Book(message.getConversationId()), "No ganada");
+				}
 				System.out.println(myAgent.getName() + ": no he ganado la subasta de " + message.getConversationId());
 			}
 	}
