@@ -41,6 +41,8 @@ public class AgentePujador extends Agent{
 			System.out.println("Pujando por " + book.getTitle() + "por un máximo de " + book.getPrice());
 		}
 		addBehaviour(new PujadorBehaviour(books));
+		PujadorGUI pujadorGUI = new PujadorGUI(books);
+		pujadorGUI.setVisible(true);
 	}
 	
 	public void takeDown() {
