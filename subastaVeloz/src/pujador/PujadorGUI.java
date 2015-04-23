@@ -1,12 +1,17 @@
 package pujador;
 
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.HashMap;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import book.Book;
@@ -15,9 +20,14 @@ import book.Book;
 public class PujadorGUI extends JFrame {
 
 	private JPanel contentPane;
+	@SuppressWarnings("unused")
 	private HashMap <Book, String> books;
 	private ModeloTabla model;
 	private JTable table;
+	private JLabel lblTtulo;
+	private JTextField title;
+	private JTextField maxPrice;
+	private AgentePujador pujador;
 
 	/**
 	 * Launch the application.
@@ -48,16 +58,46 @@ public class PujadorGUI extends JFrame {
 		contentPane.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(70, 101, 304, 123);
+		scrollPane.setBounds(61, 57, 313, 167);
 		contentPane.add(scrollPane);
 		
 		table = new JTable();
 		scrollPane.setViewportView(table);
+		
+		lblTtulo = new JLabel("T\u00EDtulo");
+		lblTtulo.setBounds(10, 8, 44, 27);
+		contentPane.add(lblTtulo);
+		
+		title = new JTextField();
+		title.setBounds(46, 11, 86, 20);
+		contentPane.add(title);
+		title.setColumns(10);
+		
+		JLabel lblNewLabel = new JLabel("Precio M\u00E1ximo");
+		lblNewLabel.setBounds(142, -4, 80, 50);
+		contentPane.add(lblNewLabel);
+		
+		maxPrice = new JTextField();
+		maxPrice.setBounds(218, 11, 86, 20);
+		contentPane.add(maxPrice);
+		maxPrice.setColumns(10);
+		
+		JButton add = new JButton("A\u00F1adir");
+		add.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (!title.getText().equals("") && !maxPrice.getText().equals("")){
+					pujador.addBook(title.getText(), Float.parseFloat(maxPrice.getText()));
+				}
+			}
+		});
+		add.setBounds(335, 10, 89, 23);
+		contentPane.add(add);
 	}
 	
-	public PujadorGUI(HashMap<Book, String> books){
+	public PujadorGUI(HashMap<Book, String> books, AgentePujador pujador){
 		this();
 		this.books = books;
+		this.pujador = pujador;
 		model = new ModeloTabla(books);
 		table.setModel(model);
 	}
