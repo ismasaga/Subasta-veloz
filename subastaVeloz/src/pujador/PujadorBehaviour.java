@@ -5,6 +5,7 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import book.Book;
 
@@ -12,10 +13,12 @@ import book.Book;
 public class PujadorBehaviour extends CyclicBehaviour {
 
 	private ArrayList <Book> books;
+	private AgentePujador pujador;
 
-	public PujadorBehaviour(ArrayList <Book>books) {
+	public PujadorBehaviour(AgentePujador pujador, HashMap<Book, String> books) {
 		super();
-		this.books = books;
+		this.books = new ArrayList<Book> (books.keySet());
+		this.pujador = pujador;
 	}
 
 
@@ -32,6 +35,7 @@ public class PujadorBehaviour extends CyclicBehaviour {
 				reply = message.createReply();
 				reply.setPerformative(ACLMessage.PROPOSE);
 				if (price != null && price > 0){
+					pujador.changeStatus(new Book(message.getConversationId()), "En curso");
 					flag = false;
 					maxPrice = (float)0.0;
 					for (Book book : books){
@@ -64,6 +68,7 @@ public class PujadorBehaviour extends CyclicBehaviour {
 				if (books.contains(new Book(message.getConversationId()))) {
 					books.remove(new Book(message.getConversationId()));
 				}
+				pujador.changeStatus(new Book(message.getConversationId()), "Adquirido");
 			}
 			else {
 				block();
@@ -72,6 +77,7 @@ public class PujadorBehaviour extends CyclicBehaviour {
 			mt = MessageTemplate.MatchPerformative(ACLMessage.INFORM);
 			message = myAgent.receive(mt);
 			if (message != null) {
+				pujador.changeStatus(new Book(message.getConversationId()), "No ganada");
 				System.out.println(myAgent.getName() + ": no he ganado la subasta de " + message.getConversationId());
 			}
 	}
