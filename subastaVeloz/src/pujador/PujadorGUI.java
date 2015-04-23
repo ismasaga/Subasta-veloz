@@ -1,14 +1,13 @@
 package pujador;
 
 import java.awt.EventQueue;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.ListSelectionModel;
-import javax.swing.border.EmptyBorder;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.border.BevelBorder;
+import javax.swing.border.EmptyBorder;
 
 import book.Book;
 
@@ -16,9 +15,9 @@ import book.Book;
 public class PujadorGUI extends JFrame {
 
 	private JPanel contentPane;
+	private HashMap <Book, String> books;
+	private ModeloTabla model;
 	private JTable table;
-	private ArrayList <Book> books;
-	private TableModel model;
 
 	/**
 	 * Launch the application.
@@ -48,17 +47,22 @@ public class PujadorGUI extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(70, 101, 304, 123);
+		contentPane.add(scrollPane);
+		
 		table = new JTable();
-		table.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		table.setBounds(33, 206, 366, -151);
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		contentPane.add(table);
+		scrollPane.setViewportView(table);
 	}
 	
-	public PujadorGUI(ArrayList<Book> books){
+	public PujadorGUI(HashMap<Book, String> books){
 		this();
 		this.books = books;
-		model = new TableModel(books);
+		model = new ModeloTabla(books);
 		table.setModel(model);
+	}
+	
+	public ModeloTabla getModel() {
+		return model;
 	}
 }
