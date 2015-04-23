@@ -1,18 +1,24 @@
 package pujador;
 
 import java.awt.EventQueue;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTable;
 import javax.swing.border.BevelBorder;
+
+import book.Book;
 
 @SuppressWarnings("serial")
 public class PujadorGUI extends JFrame {
 
 	private JPanel contentPane;
 	private JTable table;
+	private ArrayList <Book> books;
+	private TableModel model;
 
 	/**
 	 * Launch the application.
@@ -45,6 +51,14 @@ public class PujadorGUI extends JFrame {
 		table = new JTable();
 		table.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		table.setBounds(33, 206, 366, -151);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		contentPane.add(table);
+	}
+	
+	public PujadorGUI(ArrayList<Book> books){
+		this();
+		this.books = books;
+		model = new TableModel(books);
+		table.setModel(model);
 	}
 }
