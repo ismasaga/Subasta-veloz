@@ -21,7 +21,7 @@ public class PujadorGUI extends JFrame {
 
 	private JPanel contentPane;
 	@SuppressWarnings("unused")
-	private HashMap <Book, String> books;
+	private HashMap<Book, String> books;
 	private ModeloTabla model;
 	private JTable table;
 	private JLabel lblTtulo;
@@ -56,52 +56,56 @@ public class PujadorGUI extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(61, 57, 313, 167);
 		contentPane.add(scrollPane);
-		
+
 		table = new JTable();
 		scrollPane.setViewportView(table);
-		
+
 		lblTtulo = new JLabel("T\u00EDtulo");
 		lblTtulo.setBounds(10, 8, 44, 27);
 		contentPane.add(lblTtulo);
-		
+
 		title = new JTextField();
 		title.setBounds(46, 11, 86, 20);
 		contentPane.add(title);
 		title.setColumns(10);
-		
+
 		JLabel lblNewLabel = new JLabel("Precio M\u00E1ximo");
 		lblNewLabel.setBounds(142, -4, 80, 50);
 		contentPane.add(lblNewLabel);
-		
+
 		maxPrice = new JTextField();
 		maxPrice.setBounds(218, 11, 86, 20);
 		contentPane.add(maxPrice);
 		maxPrice.setColumns(10);
-		
+
 		JButton add = new JButton("A\u00F1adir");
 		add.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (!title.getText().equals("") && !maxPrice.getText().equals("")){
-					pujador.addBook(title.getText(), Float.parseFloat(maxPrice.getText()));
+				if (!title.getText().equals("")
+						&& !maxPrice.getText().equals("")) {
+					pujador.addBook(title.getText(),
+							Float.parseFloat(maxPrice.getText()));
+					title.setText("");
+					maxPrice.setText("");
 				}
 			}
 		});
 		add.setBounds(335, 10, 89, 23);
 		contentPane.add(add);
 	}
-	
-	public PujadorGUI(HashMap<Book, String> books, AgentePujador pujador){
+
+	public PujadorGUI(HashMap<Book, String> books, AgentePujador pujador) {
 		this();
 		this.books = books;
 		this.pujador = pujador;
 		model = new ModeloTabla(books);
 		table.setModel(model);
 	}
-	
+
 	public ModeloTabla getModel() {
 		return model;
 	}

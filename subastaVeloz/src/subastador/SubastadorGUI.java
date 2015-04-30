@@ -16,6 +16,7 @@ import javax.swing.border.EmptyBorder;
 
 import book.Book;
 
+@SuppressWarnings("serial")
 public class SubastadorGUI extends JFrame {
 
 	private JPanel contentPane;
@@ -83,6 +84,9 @@ public class SubastadorGUI extends JFrame {
 							.parseFloat(precio.getText()), Float
 							.parseFloat(incremento.getText()), "En curso");
 					subastador.AddBook(book);
+					titulo.setText("");
+					precio.setText("");
+					incremento.setText("");
 				}
 			}
 		});
