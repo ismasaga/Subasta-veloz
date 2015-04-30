@@ -16,7 +16,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import book.Book;
+import ontologia.Book;
 
 @SuppressWarnings("serial")
 public class PujadorGUI extends JFrame {

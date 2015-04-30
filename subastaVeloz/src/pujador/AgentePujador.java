@@ -8,7 +8,7 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 
 import java.util.HashMap;
 
-import book.Book;
+import ontologia.Book;
 
 @SuppressWarnings("serial")
 public class AgentePujador extends Agent{

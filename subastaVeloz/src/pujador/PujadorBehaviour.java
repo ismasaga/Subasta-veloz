@@ -7,7 +7,7 @@ import jade.lang.acl.MessageTemplate;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import book.Book;
+import ontologia.Book;
 
 @SuppressWarnings("serial")
 public class PujadorBehaviour extends CyclicBehaviour {

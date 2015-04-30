@@ -4,7 +4,7 @@ import jade.core.Agent;
 
 import java.util.ArrayList;
 
-import book.Book;
+import ontologia.Book;
 
 @SuppressWarnings("serial")
 public class AgenteSubastador extends Agent {

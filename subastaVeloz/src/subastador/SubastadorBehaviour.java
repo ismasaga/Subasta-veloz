@@ -12,7 +12,7 @@ import jade.lang.acl.MessageTemplate;
 
 import java.util.ArrayList;
 
-import book.Book;
+import ontologia.Book;
 
 public class SubastadorBehaviour extends TickerBehaviour {
 

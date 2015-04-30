@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
 
-import book.Book;
+import ontologia.Book;
 
 @SuppressWarnings("serial")
 public class ModeloTabla extends AbstractTableModel {
