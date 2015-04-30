@@ -2,28 +2,29 @@ package subastador;
 
 import jade.core.Agent;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 
 import book.Book;
 
 @SuppressWarnings("serial")
 public class AgenteSubastador extends Agent {
 
-	private HashMap<Book, Float> books;
+	private ArrayList<Book> books;
 	private Float increase = (float) 5.0;
+	private SubastadorGUI subastadorGUI;
 
 	protected void setup() {
-		books = new HashMap<>();
-		books.put(new Book("Don Quijote", (float) 10.0), increase);
-		books.put(new Book("El perfume", (float) 12.0), increase);
-		books.put(new Book("El nombre de la rosa", (float) 15.0), increase);
+		books = new ArrayList<>();
+		books.add(new Book("Don Quijote", (float) 10.0, (float) 2.0, "En curso"));
+		books.add(new Book("El perfume", (float) 12.0, (float) 2.0, "En curso"));
+		books.add(new Book("El nombre de la rosa", (float) 15.0, (float) 2.0,
+				"En curso"));
 
 		System.out.println("Hola! " + getAID().getName() + " está listo");
-		SubastadorGUI subastadorGUI = new SubastadorGUI(books, this);
+		subastadorGUI = new SubastadorGUI(books, this);
 		subastadorGUI.setVisible(true);
-		for (Book book : books.keySet()) {
-			addBehaviour(new SubastadorBehaviour(this, 10000, book,
-					books.get(book)));
+		for (Book book : books) {
+			addBehaviour(new SubastadorBehaviour(this, 10000, book));
 		}
 
 	}
@@ -32,14 +33,47 @@ public class AgenteSubastador extends Agent {
 		System.out.println(getAID().getName() + " ha terminado");
 	}
 
-	public void AddBook(Book book, Float increase) {
-		if (!books.containsKey(book)) {
-			books.put(book, increase);
-			addBehaviour(new SubastadorBehaviour(this, 10000, book, increase));
+	public void AddBook(Book book) {
+		boolean repe = false;
+		for (Book b : books) {
+			if (b.equals(book)) {
+				repe = true;
+			}
+		}
+		if (repe == false) {
+			books.add(book);
+			addBehaviour(new SubastadorBehaviour(this, 10000, book));
 		}
 	}
 
-	public HashMap<Book, Float> getBooks() {
+	public ArrayList<Book> getBooks() {
 		return this.books;
 	}
+
+	public void updatePrice(Book book) {
+		int i = 0;
+		int temp = 0;
+		for (Book b : books) {
+			if (b.equals(book)) {
+				temp = i;
+			}
+			i++;
+		}
+		books.get(temp).updatePrice();
+		subastadorGUI.getModel().changeStatus(book);
+	}
+
+	public void updateWinner(Book book, String winner) {
+		int i = 0;
+		int temp = 0;
+		for (Book b : books) {
+			if (b.equals(book)) {
+				temp = i;
+			}
+			i++;
+		}
+		books.get(temp).setWinner(winner);
+		subastadorGUI.getModel().changeStatus(book);
+	}
+
 }
