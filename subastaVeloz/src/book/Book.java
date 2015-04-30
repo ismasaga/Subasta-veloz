@@ -15,12 +15,6 @@ public class Book {
 		this.price = price;
 	}
 
-	public Book(String title, float price, float increase) {
-		this.title = title;
-		this.price = price;
-		this.increase = increase;
-	}
-
 	public Book(String title, float price, float increase, String winner) {
 		this.title = title;
 		this.price = price;
