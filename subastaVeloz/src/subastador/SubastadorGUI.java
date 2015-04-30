@@ -3,13 +3,14 @@ package subastador;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
@@ -22,9 +23,9 @@ public class SubastadorGUI extends JFrame {
 	private JTextField precio;
 	private JTextField incremento;
 	private AgenteSubastador subastador;
-	private HashMap<Book, String> books;
 	private JLabel lblTitulo;
-	private JTextField textField;
+	private ModeloTabla model;
+	private JTable table;
 
 	/**
 	 * Launch the application.
@@ -79,9 +80,9 @@ public class SubastadorGUI extends JFrame {
 				if (titulo.getText() != "" && precio.getText() != ""
 						&& incremento.getText() != "") {
 					Book book = new Book(titulo.getText(), Float
-							.parseFloat(precio.getText()));
-					subastador.AddBook(book,
-							Float.parseFloat(incremento.getText()));
+							.parseFloat(precio.getText()), Float
+							.parseFloat(incremento.getText()), "En curso");
+					subastador.AddBook(book);
 				}
 			}
 		});
@@ -101,10 +102,19 @@ public class SubastadorGUI extends JFrame {
 		scrollPane.setBounds(10, 86, 414, 164);
 		contentPane.add(scrollPane);
 
+		table = new JTable();
+		scrollPane.setColumnHeaderView(table);
+
 	}
 
-	public SubastadorGUI(HashMap<Book, Float> books, AgenteSubastador subastador) {
+	public SubastadorGUI(ArrayList<Book> books, AgenteSubastador subastador) {
 		this();
 		this.subastador = subastador;
+		model = new ModeloTabla(books);
+		table.setModel(model);
+	}
+
+	public ModeloTabla getModel() {
+		return this.model;
 	}
 }
