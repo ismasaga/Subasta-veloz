@@ -6,6 +6,10 @@ public class Book {
 	private float increase;
 	private String winner;
 
+	public Book() {
+
+	}
+
 	public Book(String title, float price) {
 		this.title = title;
 		this.price = price;
