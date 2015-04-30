@@ -3,6 +3,8 @@ package pujador;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.HashMap;
 
 import javax.swing.JButton;
@@ -49,8 +51,15 @@ public class PujadorGUI extends JFrame {
 	 * Create the frame.
 	 */
 	public PujadorGUI() {
+
+		this.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				pujador.takeDown();
+			}
+		});
+
 		setTitle("Agente Pujador");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

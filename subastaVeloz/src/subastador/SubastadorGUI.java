@@ -107,7 +107,7 @@ public class SubastadorGUI extends JFrame {
 		contentPane.add(scrollPane);
 
 		table = new JTable();
-		scrollPane.setColumnHeaderView(table);
+		scrollPane.setViewportView(table);
 
 	}
 
