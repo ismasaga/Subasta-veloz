@@ -6,6 +6,7 @@ import javax.swing.table.AbstractTableModel;
 
 import book.Book;
 
+@SuppressWarnings("serial")
 public class ModeloTabla extends AbstractTableModel {
 
 	public ArrayList<Book> books;
