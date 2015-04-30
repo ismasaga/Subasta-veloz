@@ -1,6 +1,9 @@
 package book;
 
-public class Book {
+import jade.content.Concept;
+
+@SuppressWarnings("serial")
+public class Book implements Concept {
 	private String title;
 	private float price;
 	private float increase;
