@@ -15,8 +15,8 @@ public class AgenteSubastador extends Agent {
 
 	private ArrayList<Book> books;
 	private SubastadorGUI subastadorGUI;
-	Codec codec = new SLCodec();
-	Ontology ontology = AuctionOntology.getInstance();
+	private Codec codec = new SLCodec();
+	private Ontology ontology = AuctionOntology.getInstance();
 
 	protected void setup() {
 
@@ -84,6 +84,14 @@ public class AgenteSubastador extends Agent {
 		}
 		books.get(temp).setWinner(winner);
 		subastadorGUI.getModel().changeStatus(book);
+	}
+
+	public Ontology getOntology() {
+		return ontology;
+	}
+
+	public Codec getCodec() {
+		return codec;
 	}
 
 }

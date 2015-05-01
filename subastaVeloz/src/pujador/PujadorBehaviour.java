@@ -1,7 +1,6 @@
 package pujador;
 
 import jade.content.lang.Codec.CodecException;
-import jade.content.onto.Ontology;
 import jade.content.onto.OntologyException;
 import jade.content.onto.basic.Action;
 import jade.core.behaviours.CyclicBehaviour;
@@ -13,13 +12,13 @@ import java.util.HashMap;
 
 import ontologia.Book;
 import ontologia.CallForProposal;
+import ontologia.Proposal;
 
 @SuppressWarnings("serial")
 public class PujadorBehaviour extends CyclicBehaviour {
 
 	private ArrayList<Book> books;
 	private AgentePujador pujador;
-	private Ontology ontology;
 
 	public PujadorBehaviour(AgentePujador pujador, HashMap<Book, String> books) {
 		super();
@@ -30,15 +29,14 @@ public class PujadorBehaviour extends CyclicBehaviour {
 	@Override
 	public void action() {
 		Action action = null;
-		ontology = pujador.ontology;
 		this.books = new ArrayList<>(pujador.getBooks().keySet());
 		MessageTemplate mt = MessageTemplate.and(
 				MessageTemplate.MatchPerformative(ACLMessage.CFP),
-				MessageTemplate.MatchOntology(ontology.getName()));
+				MessageTemplate.MatchOntology(pujador.getOntology().getName()));
 		ACLMessage message = null;
 		ACLMessage reply = null;
-		boolean flag = false;
 		Float maxPrice = (float) 0.0;
+
 		message = myAgent.receive(mt);
 		if (message != null) {
 			try {
@@ -52,29 +50,41 @@ public class PujadorBehaviour extends CyclicBehaviour {
 			Float price = cfp.getBook().getPrice();
 			reply = message.createReply();
 			reply.setPerformative(ACLMessage.PROPOSE);
-			reply.setOntology(ontology.getName());
+			reply.setOntology(pujador.getOntology().getName());
+			reply.setLanguage(pujador.getCodec().getName());
+
+			Proposal proposal = new Proposal();
+			proposal.setBook(cfp.getBook());
 			if (price != null && price > 0) {
 				pujador.changeStatus(new Book(title), "En curso");
-				flag = false;
 				maxPrice = (float) 0.0;
+				Boolean flag = false;
 				for (Book book : books) {
-					if (title.equals(book.getTitle())) {
-						flag = true;
+					if (book.getTitle().equals(title)) {
 						maxPrice = book.getPrice();
+						flag = true;
 					}
 				}
 				if (flag == true && price <= maxPrice) {
-					reply.setContent("interested");
-					System.out.println(myAgent.getName() + " acepta pujar por "
-							+ title + " por " + price);
-				} else {
-					reply.setContent("not interested");
+					proposal.setAnswer(true);
 					System.out.println(myAgent.getName()
-							+ " rechaza pujar por " + title + " por " + price);
+							+ ": acepto pujar por " + title + " por " + price);
+				} else {
+					proposal.setAnswer(false);
+					System.out.println(myAgent.getName()
+							+ ": rechazo pujar por " + title + " por " + price);
+					pujador.changeStatus(cfp.getBook(), "Precio superado");
 				}
+
 			} else {
 				reply.setPerformative(ACLMessage.NOT_UNDERSTOOD);
 				reply.setContent("Precio no válido");
+			}
+			try {
+				pujador.getContentManager().fillContent(reply,
+						new Action(myAgent.getAID(), proposal));
+			} catch (CodecException | OntologyException e) {
+				e.printStackTrace();
 			}
 			reply.setSender(myAgent.getAID());
 			myAgent.send(reply);

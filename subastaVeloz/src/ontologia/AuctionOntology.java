@@ -21,6 +21,8 @@ public class AuctionOntology extends Ontology {
 	public static final String INCREASE = "increase";
 	public static final String WINNER = "winner";
 	public static final String CFP = "CallForProposal";
+	public static final String PROPOSAL = "Proposal";
+	public static final String ANSWER = "answer";
 
 	// The singleton instance of this ontology
 	private static AuctionOntology theInstance = new AuctionOntology();
@@ -47,6 +49,13 @@ public class AuctionOntology extends Ontology {
 			add(new AgentActionSchema(CFP), CallForProposal.class);
 			AgentActionSchema schema = (AgentActionSchema) getSchema(CFP);
 			schema.add(BOOK, (ConceptSchema) getSchema(BOOK));
+
+			add(new AgentActionSchema(PROPOSAL), Proposal.class);
+			schema = (AgentActionSchema) getSchema(PROPOSAL);
+			schema.add(BOOK, (ConceptSchema) getSchema(BOOK));
+			schema.add(ANSWER,
+					(PrimitiveSchema) getSchema(BasicOntology.BOOLEAN));
+
 		} catch (OntologyException oe) {
 
 			oe.printStackTrace();

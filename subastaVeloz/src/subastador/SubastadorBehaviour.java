@@ -1,8 +1,6 @@
 package subastador;
 
-import jade.content.lang.Codec;
 import jade.content.lang.Codec.CodecException;
-import jade.content.onto.Ontology;
 import jade.content.onto.OntologyException;
 import jade.content.onto.basic.Action;
 import jade.core.AID;
@@ -19,6 +17,7 @@ import java.util.ArrayList;
 
 import ontologia.Book;
 import ontologia.CallForProposal;
+import ontologia.Proposal;
 
 public class SubastadorBehaviour extends TickerBehaviour {
 
@@ -54,13 +53,11 @@ public class SubastadorBehaviour extends TickerBehaviour {
 			}
 
 			if (!buyerAgents.isEmpty()) {
-				Ontology ontology = subastador.ontology;
-				Codec codec = subastador.codec;
 				CallForProposal cfp = new CallForProposal(book);
 
 				ACLMessage message = new ACLMessage(ACLMessage.CFP);
-				message.setOntology(ontology.getName());
-				message.setLanguage(codec.getName());
+				message.setOntology(subastador.getOntology().getName());
+				message.setLanguage(subastador.getCodec().getName());
 				try {
 					myAgent.getContentManager().fillContent(message,
 							new Action(myAgent.getAID(), cfp));
@@ -77,8 +74,8 @@ public class SubastadorBehaviour extends TickerBehaviour {
 				MessageTemplate mt = MessageTemplate.and(
 						MessageTemplate.MatchConversationId(book.getTitle()),
 						MessageTemplate.MatchInReplyTo(message.getReplyWith()));
-				mt = MessageTemplate.and(mt,
-						MessageTemplate.MatchOntology(ontology.getName()));
+				mt = MessageTemplate.and(mt, MessageTemplate
+						.MatchOntology(subastador.getOntology().getName()));
 
 				int replyCount = 0;
 				int interestedCount = 0;
@@ -86,13 +83,20 @@ public class SubastadorBehaviour extends TickerBehaviour {
 				do {
 					ACLMessage reply = myAgent.receive(mt);
 					if (reply != null) {
-						String content = reply.getContent();
-						if (content.equals("interested")) {
+						Action action = null;
+						try {
+							action = (Action) subastador.getContentManager()
+									.extractContent(reply);
+						} catch (CodecException | OntologyException e) {
+							e.printStackTrace();
+						}
+						Proposal proposal = (Proposal) action.getAction();
+						if (proposal.getAnswer() == true) {
 							if (!haveWinner) {
 								haveWinner = true;
-								winner = reply.getSender();
+								winner = action.getActor();
 							}
-							System.out.println(reply.getSender().getName()
+							System.out.println(action.getActor().getLocalName()
 									+ "acepta pujar por "
 									+ message.getConversationId() + " por "
 									+ book.getPrice() + " euros");

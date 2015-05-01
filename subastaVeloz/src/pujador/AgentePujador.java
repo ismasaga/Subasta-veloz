@@ -19,8 +19,8 @@ public class AgentePujador extends Agent {
 
 	private HashMap<Book, String> books;
 	private PujadorGUI pujadorGUI;
-	Ontology ontology;
-	Codec codec;
+	private Ontology ontology = AuctionOntology.getInstance();
+	private Codec codec = new SLCodec();;
 
 	public void setup() {
 		DFAgentDescription dfd = new DFAgentDescription();
@@ -43,8 +43,6 @@ public class AgentePujador extends Agent {
 								.parseFloat((String) args[i + 1])),
 						"Esperando subasta");
 
-			codec = new SLCodec();
-			ontology = AuctionOntology.getInstance();
 			getContentManager().registerLanguage(codec);
 			getContentManager().registerOntology(ontology);
 
@@ -85,5 +83,13 @@ public class AgentePujador extends Agent {
 
 	public HashMap<Book, String> getBooks() {
 		return books;
+	}
+
+	public Codec getCodec() {
+		return codec;
+	}
+
+	public Ontology getOntology() {
+		return ontology;
 	}
 }
