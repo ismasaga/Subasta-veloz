@@ -10,7 +10,6 @@ import ontologia.Book;
 public class AgenteSubastador extends Agent {
 
 	private ArrayList<Book> books;
-	private Float increase = (float) 5.0;
 	private SubastadorGUI subastadorGUI;
 
 	protected void setup() {
