@@ -1,9 +1,13 @@
 package subastador;
 
+import jade.content.lang.Codec;
+import jade.content.lang.sl.SLCodec;
+import jade.content.onto.Ontology;
 import jade.core.Agent;
 
 import java.util.ArrayList;
 
+import ontologia.AuctionOntology;
 import ontologia.Book;
 
 @SuppressWarnings("serial")
@@ -11,8 +15,11 @@ public class AgenteSubastador extends Agent {
 
 	private ArrayList<Book> books;
 	private SubastadorGUI subastadorGUI;
+	Codec codec = new SLCodec();
+	Ontology ontology = AuctionOntology.getInstance();
 
 	protected void setup() {
+
 		books = new ArrayList<>();
 		books.add(new Book("Don Quijote", (float) 10.0, (float) 2.0, "En curso"));
 		books.add(new Book("El perfume", (float) 12.0, (float) 2.0, "En curso"));
@@ -22,6 +29,9 @@ public class AgenteSubastador extends Agent {
 		System.out.println("Hola! " + getAID().getName() + " está listo");
 		subastadorGUI = new SubastadorGUI(books, this);
 		subastadorGUI.setVisible(true);
+
+		getContentManager().registerLanguage(codec);
+		getContentManager().registerOntology(ontology);
 		for (Book book : books) {
 			addBehaviour(new SubastadorBehaviour(this, 10000, book));
 		}
@@ -30,6 +40,7 @@ public class AgenteSubastador extends Agent {
 
 	protected void takeDown() {
 		System.out.println(getAID().getName() + " ha terminado");
+		// TODO kill GUI
 	}
 
 	public void AddBook(Book book) {

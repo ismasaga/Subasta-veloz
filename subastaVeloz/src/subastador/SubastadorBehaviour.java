@@ -1,5 +1,10 @@
 package subastador;
 
+import jade.content.lang.Codec;
+import jade.content.lang.Codec.CodecException;
+import jade.content.onto.Ontology;
+import jade.content.onto.OntologyException;
+import jade.content.onto.basic.Action;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
@@ -13,6 +18,7 @@ import jade.lang.acl.MessageTemplate;
 import java.util.ArrayList;
 
 import ontologia.Book;
+import ontologia.CallForProposal;
 
 public class SubastadorBehaviour extends TickerBehaviour {
 
@@ -48,9 +54,20 @@ public class SubastadorBehaviour extends TickerBehaviour {
 			}
 
 			if (!buyerAgents.isEmpty()) {
+				Ontology ontology = subastador.ontology;
+				Codec codec = subastador.codec;
+				CallForProposal cfp = new CallForProposal(book);
+
 				ACLMessage message = new ACLMessage(ACLMessage.CFP);
+				message.setOntology(ontology.getName());
+				message.setLanguage(codec.getName());
+				try {
+					myAgent.getContentManager().fillContent(message,
+							new Action(myAgent.getAID(), cfp));
+				} catch (CodecException | OntologyException e) {
+					e.printStackTrace();
+				}
 				message.setSender(myAgent.getAID());
-				message.setContent(String.valueOf(book.getPrice()));
 				for (AID buyer : buyerAgents) {
 					message.addReceiver(buyer);
 				}
@@ -60,6 +77,8 @@ public class SubastadorBehaviour extends TickerBehaviour {
 				MessageTemplate mt = MessageTemplate.and(
 						MessageTemplate.MatchConversationId(book.getTitle()),
 						MessageTemplate.MatchInReplyTo(message.getReplyWith()));
+				mt = MessageTemplate.and(mt,
+						MessageTemplate.MatchOntology(ontology.getName()));
 
 				int replyCount = 0;
 				int interestedCount = 0;

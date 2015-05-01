@@ -3,6 +3,7 @@ package ontologia;
 import jade.content.onto.BasicOntology;
 import jade.content.onto.Ontology;
 import jade.content.onto.OntologyException;
+import jade.content.schema.AgentActionSchema;
 import jade.content.schema.ConceptSchema;
 import jade.content.schema.ObjectSchema;
 import jade.content.schema.PrimitiveSchema;
@@ -19,6 +20,7 @@ public class AuctionOntology extends Ontology {
 	public static final String PRICE = "price";
 	public static final String INCREASE = "increase";
 	public static final String WINNER = "winner";
+	public static final String CFP = "CallForProposal";
 
 	// The singleton instance of this ontology
 	private static AuctionOntology theInstance = new AuctionOntology();
@@ -41,6 +43,10 @@ public class AuctionOntology extends Ontology {
 					ObjectSchema.OPTIONAL);
 			cs.add(WINNER, (PrimitiveSchema) getSchema(BasicOntology.STRING),
 					ObjectSchema.OPTIONAL);
+
+			add(new AgentActionSchema(CFP), CallForProposal.class);
+			AgentActionSchema schema = (AgentActionSchema) getSchema(CFP);
+			schema.add(BOOK, (ConceptSchema) getSchema(BOOK));
 		} catch (OntologyException oe) {
 
 			oe.printStackTrace();
