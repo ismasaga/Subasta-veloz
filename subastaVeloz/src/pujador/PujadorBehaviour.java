@@ -10,9 +10,10 @@ import jade.lang.acl.MessageTemplate;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import ontologia.AcceptProposal;
 import ontologia.Book;
 import ontologia.CallForProposal;
-import ontologia.Proposal;
+import ontologia.Propose;
 
 @SuppressWarnings("serial")
 public class PujadorBehaviour extends CyclicBehaviour {
@@ -53,7 +54,7 @@ public class PujadorBehaviour extends CyclicBehaviour {
 			reply.setOntology(pujador.getOntology().getName());
 			reply.setLanguage(pujador.getCodec().getName());
 
-			Proposal proposal = new Proposal();
+			Propose proposal = new Propose();
 			proposal.setBook(cfp.getBook());
 			if (price != null && price > 0) {
 				pujador.changeStatus(new Book(title), "En curso");
@@ -66,11 +67,11 @@ public class PujadorBehaviour extends CyclicBehaviour {
 					}
 				}
 				if (flag == true && price <= maxPrice) {
-					proposal.setAnswer(true);
+					proposal.setAnswer(new Boolean(true));
 					System.out.println(myAgent.getName()
 							+ ": acepto pujar por " + title + " por " + price);
 				} else {
-					proposal.setAnswer(false);
+					proposal.setAnswer(new Boolean(false));
 					System.out.println(myAgent.getName()
 							+ ": rechazo pujar por " + title + " por " + price);
 					pujador.changeStatus(cfp.getBook(), "Precio superado");
@@ -88,6 +89,22 @@ public class PujadorBehaviour extends CyclicBehaviour {
 			}
 			reply.setSender(myAgent.getAID());
 			myAgent.send(reply);
+		}
+
+		mt = MessageTemplate.MatchPerformative(ACLMessage.ACCEPT_PROPOSAL);
+		message = myAgent.receive(mt);
+		if (message != null) {
+			try {
+				action = (Action) pujador.getContentManager().extractContent(
+						message);
+			} catch (CodecException | OntologyException e) {
+				e.printStackTrace();
+			}
+			AcceptProposal acceptProposal = (AcceptProposal) action.getAction();
+			Book book = acceptProposal.getBook();
+			pujador.changeStatus(book, "Ganador de esta ronda");
+		} else {
+			block();
 		}
 
 		mt = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);

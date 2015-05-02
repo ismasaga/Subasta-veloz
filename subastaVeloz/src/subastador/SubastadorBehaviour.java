@@ -16,9 +16,10 @@ import jade.lang.acl.MessageTemplate;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import ontologia.AcceptProposal;
 import ontologia.Book;
 import ontologia.CallForProposal;
-import ontologia.Proposal;
+import ontologia.Propose;
 
 public class SubastadorBehaviour extends TickerBehaviour {
 
@@ -92,8 +93,11 @@ public class SubastadorBehaviour extends TickerBehaviour {
 						} catch (CodecException | OntologyException e) {
 							e.printStackTrace();
 						}
-						Proposal proposal = (Proposal) action.getAction();
-						if (proposal.getAnswer() == true) {
+						Propose propose = (Propose) action.getAction();
+
+						assert propose.getAnswer() != null : " propose.getAnswer() returns null ";
+
+						if (propose.getAnswer() == true) {
 							if (!haveWinner) {
 								haveWinner = true;
 								winner = action.getActor();
@@ -110,11 +114,18 @@ public class SubastadorBehaviour extends TickerBehaviour {
 					}
 				} while (replyCount < buyerAgents.size());
 
+				AcceptProposal acceptPropose = new AcceptProposal(book);
 				message = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
+				message.setOntology(subastador.getOntology().getName());
+				message.setLanguage(subastador.getCodec().getName());
 				message.setSender(myAgent.getAID());
 				message.addReceiver(winner);
-				message.setContent("Ronda ganada de " + book + ". Precio: "
-						+ book.getPrice() + " euros");
+				try {
+					myAgent.getContentManager().fillContent(message,
+							new Action(myAgent.getAID(), acceptPropose));
+				} catch (CodecException | OntologyException e) {
+					e.printStackTrace();
+				}
 				message.setConversationId(book.getTitle());
 				myAgent.send(message);
 

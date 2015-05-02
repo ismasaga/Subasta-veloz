@@ -15,19 +15,20 @@ public class AuctionOntology extends Ontology {
 	public static final String ONTOLOGY_NAME = "Auction-Ontology";
 
 	// Vocabulary
-	public static final String BOOK = "book";
+	public static final String BOOK = "Book";
 	public static final String TITLE = "title";
 	public static final String PRICE = "price";
 	public static final String INCREASE = "increase";
 	public static final String WINNER = "winner";
 	public static final String CFP = "CallForProposal";
-	public static final String PROPOSAL = "Proposal";
+	public static final String PROPOSE = "Propose";
 	public static final String ANSWER = "answer";
+	public static final String ACCEPT_PROPOSAL = "AcceptProposal";
 
 	// The singleton instance of this ontology
 	private static AuctionOntology theInstance = new AuctionOntology();
 
-	// This is the method to access the singleton music shop ontology object
+	// This is the method to access the singleton auction ontology object
 	public static AuctionOntology getInstance() {
 		return theInstance;
 	}
@@ -50,12 +51,15 @@ public class AuctionOntology extends Ontology {
 			AgentActionSchema schema = (AgentActionSchema) getSchema(CFP);
 			schema.add(BOOK, (ConceptSchema) getSchema(BOOK));
 
-			add(new AgentActionSchema(PROPOSAL), Proposal.class);
-			schema = (AgentActionSchema) getSchema(PROPOSAL);
-			schema.add(BOOK, (ConceptSchema) getSchema(BOOK));
+			add(new AgentActionSchema(PROPOSE), Propose.class);
+			schema = (AgentActionSchema) getSchema(PROPOSE);
 			schema.add(ANSWER,
 					(PrimitiveSchema) getSchema(BasicOntology.BOOLEAN));
+			schema.add(BOOK, (ConceptSchema) getSchema(BOOK));
 
+			add(new AgentActionSchema(ACCEPT_PROPOSAL), AcceptProposal.class);
+			schema = (AgentActionSchema) getSchema(ACCEPT_PROPOSAL);
+			schema.add(BOOK, (ConceptSchema) getSchema(BOOK));
 		} catch (OntologyException oe) {
 
 			oe.printStackTrace();

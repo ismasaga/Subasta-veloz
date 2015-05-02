@@ -12,8 +12,8 @@ public class Propose implements AgentAction {
 
 	}
 
-	public Propose(boolean answer, Book book) {
-		this.answer = answer;
+	public Propose(Boolean answer, Book book) {
+		this.answer = new Boolean(answer);
 		this.book = book;
 	}
 
