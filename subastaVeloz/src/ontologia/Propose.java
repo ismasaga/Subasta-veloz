@@ -3,16 +3,16 @@ package ontologia;
 import jade.content.AgentAction;
 
 @SuppressWarnings("serial")
-public class Proposal implements AgentAction {
+public class Propose implements AgentAction {
 
 	private Boolean answer;
 	private Book book;
 
-	public Proposal() {
+	public Propose() {
 
 	}
 
-	public Proposal(boolean answer, Book book) {
+	public Propose(boolean answer, Book book) {
 		this.answer = answer;
 		this.book = book;
 	}
