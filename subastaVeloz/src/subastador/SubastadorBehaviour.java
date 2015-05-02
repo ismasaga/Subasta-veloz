@@ -14,6 +14,7 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import ontologia.Book;
 import ontologia.CallForProposal;
@@ -53,6 +54,7 @@ public class SubastadorBehaviour extends TickerBehaviour {
 			}
 
 			if (!buyerAgents.isEmpty()) {
+				Collections.shuffle(buyerAgents);
 				CallForProposal cfp = new CallForProposal(book);
 
 				ACLMessage message = new ACLMessage(ACLMessage.CFP);
