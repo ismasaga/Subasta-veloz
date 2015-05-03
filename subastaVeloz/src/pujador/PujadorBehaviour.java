@@ -15,6 +15,7 @@ import ontologia.Book;
 import ontologia.CallForProposal;
 import ontologia.Propose;
 import ontologia.RejectProposal;
+import ontologia.Request;
 
 @SuppressWarnings("serial")
 public class PujadorBehaviour extends CyclicBehaviour {
@@ -128,11 +129,17 @@ public class PujadorBehaviour extends CyclicBehaviour {
 		message = myAgent.receive(mt);
 		if (message != null) {
 			// Current bidder won desired book
-			if (books.contains(new Book(message.getConversationId()))) {
-				books.remove(new Book(message.getConversationId()));
+			try {
+				action = (Action) pujador.getContentManager().extractContent(
+						message);
+			} catch (CodecException | OntologyException e) {
+				e.printStackTrace();
 			}
-			pujador.changeStatus(new Book(message.getConversationId()),
-					"Adquirido");
+			Request request = (Request) action.getAction();
+			if (books.contains(request.getBook())) {
+				books.remove(request.getBook());
+			}
+			pujador.changeStatus(request.getBook(), "Adquirido");
 		} else {
 			block();
 		}

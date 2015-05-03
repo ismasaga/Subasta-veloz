@@ -21,6 +21,7 @@ import ontologia.Book;
 import ontologia.CallForProposal;
 import ontologia.Propose;
 import ontologia.RejectProposal;
+import ontologia.Request;
 
 public class SubastadorBehaviour extends TickerBehaviour {
 
@@ -195,13 +196,19 @@ public class SubastadorBehaviour extends TickerBehaviour {
 					/***************************************************************/
 
 					/* Solicitar pago al ganador de la subasta */
+					Request request = new Request(book);
 					message = new ACLMessage(ACLMessage.REQUEST);
+					message.setOntology(subastador.getOntology().getName());
+					message.setLanguage(subastador.getCodec().getName());
 					message.setSender(myAgent.getAID());
 					message.setConversationId(book.getTitle());
-					message.setContent("Has ganado la subasta de " + book
-							+ " por " + String.valueOf(book.getPrice())
-							+ " por favor, realiza el pago");
 					message.addReceiver(winner);
+					try {
+						myAgent.getContentManager().fillContent(message,
+								new Action(myAgent.getAID(), request));
+					} catch (CodecException | OntologyException e) {
+						e.printStackTrace();
+					}
 					myAgent.send(message);
 					/******************************************/
 

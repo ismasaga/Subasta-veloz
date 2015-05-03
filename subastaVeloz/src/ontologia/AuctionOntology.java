@@ -25,6 +25,7 @@ public class AuctionOntology extends Ontology {
 	public static final String ANSWER = "answer";
 	public static final String ACCEPT_PROPOSAL = "AcceptProposal";
 	public static final String REJECT_PROPOSAL = "RejectProposal";
+	public static final String REQUEST = "Request";
 
 	// The singleton instance of this ontology
 	private static AuctionOntology theInstance = new AuctionOntology();
@@ -64,6 +65,10 @@ public class AuctionOntology extends Ontology {
 
 			add(new AgentActionSchema(REJECT_PROPOSAL), RejectProposal.class);
 			schema = (AgentActionSchema) getSchema(REJECT_PROPOSAL);
+			schema.add(BOOK, (ConceptSchema) getSchema(BOOK));
+
+			add(new AgentActionSchema(REQUEST), Request.class);
+			schema = (AgentActionSchema) getSchema(REQUEST);
 			schema.add(BOOK, (ConceptSchema) getSchema(BOOK));
 
 		} catch (OntologyException oe) {
