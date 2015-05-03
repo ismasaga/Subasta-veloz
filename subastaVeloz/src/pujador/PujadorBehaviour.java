@@ -14,6 +14,7 @@ import ontologia.AcceptProposal;
 import ontologia.Book;
 import ontologia.CallForProposal;
 import ontologia.Propose;
+import ontologia.RejectProposal;
 
 @SuppressWarnings("serial")
 public class PujadorBehaviour extends CyclicBehaviour {
@@ -102,7 +103,23 @@ public class PujadorBehaviour extends CyclicBehaviour {
 			}
 			AcceptProposal acceptProposal = (AcceptProposal) action.getAction();
 			Book book = acceptProposal.getBook();
-			pujador.changeStatus(book, "Ganador de esta ronda");
+			pujador.changeStatus(book, "Ronda ganada");
+		} else {
+			block();
+		}
+
+		mt = MessageTemplate.MatchPerformative(ACLMessage.REJECT_PROPOSAL);
+		message = myAgent.receive(mt);
+		if (message != null) {
+			try {
+				action = (Action) pujador.getContentManager().extractContent(
+						message);
+			} catch (CodecException | OntologyException e) {
+				e.printStackTrace();
+			}
+			RejectProposal rejectProposal = (RejectProposal) action.getAction();
+			Book book = rejectProposal.getBook();
+			pujador.changeStatus(book, "Ronda no ganada");
 		} else {
 			block();
 		}

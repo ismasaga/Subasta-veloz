@@ -20,6 +20,7 @@ import ontologia.AcceptProposal;
 import ontologia.Book;
 import ontologia.CallForProposal;
 import ontologia.Propose;
+import ontologia.RejectProposal;
 
 public class SubastadorBehaviour extends TickerBehaviour {
 
@@ -129,14 +130,22 @@ public class SubastadorBehaviour extends TickerBehaviour {
 				message.setConversationId(book.getTitle());
 				myAgent.send(message);
 
+				RejectProposal rejectProposal = new RejectProposal(book);
 				message = new ACLMessage(ACLMessage.REJECT_PROPOSAL);
+				message.setOntology(subastador.getOntology().getName());
+				message.setLanguage(subastador.getCodec().getName());
 				message.setSender(myAgent.getAID());
-				message.setContent("No has ganado esta ronda de " + book);
 				message.setConversationId(book.getTitle());
 				for (AID buyer : buyerAgents) {
 					if (!buyer.equals(winner)) {
 						message.addReceiver(buyer);
 					}
+				}
+				try {
+					myAgent.getContentManager().fillContent(message,
+							new Action(myAgent.getAID(), rejectProposal));
+				} catch (CodecException | OntologyException e) {
+					e.printStackTrace();
 				}
 				myAgent.send(message);
 
