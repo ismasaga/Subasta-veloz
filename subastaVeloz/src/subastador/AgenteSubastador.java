@@ -61,15 +61,6 @@ public class AgenteSubastador extends Agent {
 	}
 
 	public void updatePrice(Book book) {
-		int i = 0;
-		int temp = 0;
-		for (Book b : books) {
-			if (b.equals(book)) {
-				temp = i;
-			}
-			i++;
-		}
-		books.get(temp).updatePrice();
 		subastadorGUI.getModel().changeStatus(book);
 	}
 
