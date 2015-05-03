@@ -19,6 +19,7 @@ import java.util.Collections;
 import ontologia.AcceptProposal;
 import ontologia.Book;
 import ontologia.CallForProposal;
+import ontologia.Inform;
 import ontologia.Propose;
 import ontologia.RejectProposal;
 import ontologia.Request;
@@ -180,16 +181,22 @@ public class SubastadorBehaviour extends TickerBehaviour {
 					 * Informar a todos los participantes que no han ganado la
 					 * subasta
 					 */
+					Inform inform = new Inform(book);
 					message = new ACLMessage(ACLMessage.INFORM);
+					message.setOntology(subastador.getOntology().getName());
+					message.setLanguage(subastador.getCodec().getName());
 					message.setSender(myAgent.getAID());
 					message.setConversationId(book.getTitle());
-					message.setContent("Subasta de " + book
-							+ " finalizada. El libro se vende por "
-							+ String.valueOf(book.getPrice()));
 					for (AID buyer : buyerAgents) {
 						if (!buyer.equals(winner)) {
 							message.addReceiver(buyer);
 						}
+					}
+					try {
+						myAgent.getContentManager().fillContent(message,
+								new Action(myAgent.getAID(), inform));
+					} catch (CodecException | OntologyException e) {
+						e.printStackTrace();
 					}
 					myAgent.send(message);
 

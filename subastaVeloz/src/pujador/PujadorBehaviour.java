@@ -13,6 +13,7 @@ import java.util.HashMap;
 import ontologia.AcceptProposal;
 import ontologia.Book;
 import ontologia.CallForProposal;
+import ontologia.Inform;
 import ontologia.Propose;
 import ontologia.RejectProposal;
 import ontologia.Request;
@@ -147,7 +148,14 @@ public class PujadorBehaviour extends CyclicBehaviour {
 		mt = MessageTemplate.MatchPerformative(ACLMessage.INFORM);
 		message = myAgent.receive(mt);
 		if (message != null) {
-			if (books.contains(new Book(message.getConversationId()))) {
+			try {
+				action = (Action) pujador.getContentManager().extractContent(
+						message);
+			} catch (CodecException | OntologyException e) {
+				e.printStackTrace();
+			}
+			Inform inform = (Inform) action.getAction();
+			if (books.contains(inform.getBook())) {
 				pujador.changeStatus(new Book(message.getConversationId()),
 						"No ganada");
 			}
