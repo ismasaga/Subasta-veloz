@@ -35,27 +35,17 @@ public class AgentePujador extends Agent {
 		} catch (FIPAException e) {
 			System.out.println(e.getMessage());
 		}
-		Object[] args = getArguments();
-		if (args != null && args.length % 2 == 0 && args.length >= 2) {
-			for (int i = 0; i < args.length; i += 2)
-				books.put(
-						new Book((String) args[i], Float
-								.parseFloat((String) args[i + 1])),
-						"Esperando subasta");
 
-			getContentManager().registerLanguage(codec);
-			getContentManager().registerOntology(ontology);
+		getContentManager().registerLanguage(codec);
+		getContentManager().registerOntology(ontology);
 
-			for (Book book : books.keySet()) {
-				System.out.println("Pujando por " + book.getTitle()
-						+ " por un máximo de " + book.getPrice() + " euros");
-			}
-			addBehaviour(new PujadorBehaviour(this, books));
-			pujadorGUI = new PujadorGUI(books, this);
-			pujadorGUI.setVisible(true);
-		} else {
-			System.out.println("Número incorrecto de argumentos");
+		for (Book book : books.keySet()) {
+			System.out.println("Pujando por " + book.getTitle()
+					+ " por un máximo de " + book.getPrice() + " euros");
 		}
+		addBehaviour(new PujadorBehaviour(this, books));
+		pujadorGUI = new PujadorGUI(books, this);
+		pujadorGUI.setVisible(true);
 
 	}
 
