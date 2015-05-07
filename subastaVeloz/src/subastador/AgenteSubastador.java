@@ -46,7 +46,7 @@ public class AgenteSubastador extends Agent {
 	public void AddBook(Book book) {
 		boolean repe = false;
 		for (Book b : books) {
-			if (b.equals(book)) {
+			if (b.equals(book) && b.getWinner() == "En curso") {
 				repe = true;
 			}
 		}

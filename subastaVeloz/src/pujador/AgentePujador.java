@@ -59,7 +59,7 @@ public class AgentePujador extends Agent {
 	}
 
 	public void changeStatus(Book book, String status) {
-		if (books.containsKey(book)) {
+		if (books.containsKey(book) && books.get(book) != "Adquirido") {
 			books.put(book, status);
 			pujadorGUI.getModel().changeStatus(book, status);
 		}

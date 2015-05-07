@@ -59,7 +59,6 @@ public class PujadorGUI extends JFrame {
 			}
 		});
 
-		setTitle("Agente Pujador");
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -113,6 +112,7 @@ public class PujadorGUI extends JFrame {
 		this.pujador = pujador;
 		model = new ModeloTabla(books);
 		table.setModel(model);
+		setTitle(pujador.getLocalName());
 	}
 
 	public ModeloTabla getModel() {

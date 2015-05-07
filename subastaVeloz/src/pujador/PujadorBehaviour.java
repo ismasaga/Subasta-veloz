@@ -7,7 +7,6 @@ import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import ontologia.AcceptProposal;
@@ -21,25 +20,26 @@ import ontologia.Request;
 @SuppressWarnings("serial")
 public class PujadorBehaviour extends CyclicBehaviour {
 
-	private ArrayList<Book> books;
+	private HashMap<Book, String> books;
 	private AgentePujador pujador;
 
 	public PujadorBehaviour(AgentePujador pujador, HashMap<Book, String> books) {
 		super();
-		this.books = new ArrayList<Book>(books.keySet());
+		this.books = new HashMap<Book, String>(books);
 		this.pujador = pujador;
 	}
 
 	@Override
 	public void action() {
 		Action action = null;
-		this.books = new ArrayList<>(pujador.getBooks().keySet());
+		this.books = new HashMap<>(pujador.getBooks());
 		MessageTemplate mt = MessageTemplate.and(
 				MessageTemplate.MatchPerformative(ACLMessage.CFP),
 				MessageTemplate.MatchOntology(pujador.getOntology().getName()));
 		ACLMessage message = null;
 		ACLMessage reply = null;
 		Float maxPrice = (float) 0.0;
+		String estado = "Adquirido";
 
 		message = myAgent.receive(mt);
 		if (message != null) {
@@ -63,13 +63,14 @@ public class PujadorBehaviour extends CyclicBehaviour {
 				pujador.changeStatus(new Book(title), "En curso");
 				maxPrice = (float) 0.0;
 				Boolean flag = false;
-				for (Book book : books) {
+				for (Book book : books.keySet()) {
 					if (book.getTitle().equals(title)) {
 						maxPrice = book.getPrice();
+						estado = books.get(book);
 						flag = true;
 					}
 				}
-				if (flag == true && price <= maxPrice) {
+				if (flag == true && price <= maxPrice && estado != "Adquirido") {
 					proposal.setAnswer(new Boolean(true));
 					System.out.println(myAgent.getName()
 							+ ": acepto pujar por " + title + " por " + price);
@@ -137,7 +138,7 @@ public class PujadorBehaviour extends CyclicBehaviour {
 				e.printStackTrace();
 			}
 			Request request = (Request) action.getAction();
-			if (books.contains(request.getBook())) {
+			if (books.keySet().contains(request.getBook())) {
 				books.remove(request.getBook());
 			}
 			pujador.changeStatus(request.getBook(), "Adquirido");
@@ -155,7 +156,7 @@ public class PujadorBehaviour extends CyclicBehaviour {
 				e.printStackTrace();
 			}
 			Inform inform = (Inform) action.getAction();
-			if (books.contains(inform.getBook())) {
+			if (books.keySet().contains(inform.getBook())) {
 				pujador.changeStatus(new Book(message.getConversationId()),
 						"No ganada");
 			}
