@@ -1,0 +1,9 @@
+# Exclude IntelliJ IDEA folders and files
+.idea
+out
+test
+P5-CoDi-Axentes.iml
+
+# Exclude JADE files
+APDescription.txt
+MTPs-Main-Container.txt

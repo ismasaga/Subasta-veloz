@@ -25,7 +25,7 @@ public class PujadorBehaviour extends CyclicBehaviour {
 
 	public PujadorBehaviour(AgentePujador pujador, HashMap<Book, String> books) {
 		super();
-		this.books = new HashMap<Book, String>(books);
+		this.books = new HashMap<>(books);
 		this.pujador = pujador;
 	}
 
@@ -83,7 +83,7 @@ public class PujadorBehaviour extends CyclicBehaviour {
 
 			} else {
 				reply.setPerformative(ACLMessage.NOT_UNDERSTOOD);
-				reply.setContent("Precio no v·lido");
+				reply.setContent("Precio no v√°lido");
 			}
 			try {
 				pujador.getContentManager().fillContent(reply,

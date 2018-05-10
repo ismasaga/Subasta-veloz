@@ -26,7 +26,7 @@ public class AgenteSubastador extends Agent {
 		books.add(new Book("El nombre de la rosa", (float) 15.0, (float) 2.0,
 				"En curso"));
 
-		System.out.println("Hola! " + getAID().getName() + " está listo");
+		System.out.println("Hola! " + getAID().getName() + " estï¿½ listo");
 		subastadorGUI = new SubastadorGUI(books, this);
 		subastadorGUI.setVisible(true);
 

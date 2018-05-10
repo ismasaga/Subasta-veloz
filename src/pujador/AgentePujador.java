@@ -20,7 +20,7 @@ public class AgentePujador extends Agent {
 	private HashMap<Book, String> books;
 	private PujadorGUI pujadorGUI;
 	private Ontology ontology = AuctionOntology.getInstance();
-	private Codec codec = new SLCodec();;
+	private Codec codec = new SLCodec();
 
 	public void setup() {
 		DFAgentDescription dfd = new DFAgentDescription();
@@ -41,7 +41,7 @@ public class AgentePujador extends Agent {
 
 		for (Book book : books.keySet()) {
 			System.out.println("Pujando por " + book.getTitle()
-					+ " por un m·ximo de " + book.getPrice() + " euros");
+					+ " por un m√°ximo de " + book.getPrice() + " euros");
 		}
 		addBehaviour(new PujadorBehaviour(this, books));
 		pujadorGUI = new PujadorGUI(books, this);

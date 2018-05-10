@@ -162,16 +162,16 @@ public class SubastadorBehaviour extends TickerBehaviour {
 						ended = true;
 					}
 				} else if (interestedCount == 1) {
-					// Sólo hay un interesado en la ronda actual
+					// SÃ³lo hay un interesado en la ronda actual
 					System.out
 							.println("Subasta de "
 									+ book
 									+ " ganada por "
 									+ winner.getLocalName()
-									+ " por ser el único interesado en la ronda actual");
+									+ " por ser el Ãºnico interesado en la ronda actual");
 					ended = true;
 				} else {
-					// hay más interesados en la ronda actual
+					// hay mÃ¡s interesados en la ronda actual
 					book.updatePrice();
 					subastador.updatePrice(book);
 				}
