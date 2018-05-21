@@ -14,11 +14,9 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import ontologia.Book;
+import ontologia.Libro;
 
-@SuppressWarnings("serial")
 public class SubastadorGUI extends JFrame {
-
 	private JPanel contentPane;
 	private JTextField titulo;
 	private JTextField precio;
@@ -28,9 +26,7 @@ public class SubastadorGUI extends JFrame {
 	private ModeloTabla model;
 	private JTable table;
 
-	/**
-	 * Launch the application.
-	 */
+	// Lanza a interfaz
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -44,9 +40,6 @@ public class SubastadorGUI extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
 	public SubastadorGUI() {
 
 		setTitle("Agente Subastador");
@@ -75,18 +68,25 @@ public class SubastadorGUI extends JFrame {
 		incremento.setBounds(220, 47, 41, 20);
 		getContentPane().add(incremento);
 
-		JButton btnAadir = new JButton("A\u00F1adir");
+		JButton btnAadir = new JButton("Engadir");
 		btnAadir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (titulo.getText() != "" && precio.getText() != ""
-						&& incremento.getText() != "") {
-					Book book = new Book(titulo.getText(), Float
-							.parseFloat(precio.getText()), Float
-							.parseFloat(incremento.getText()), "En curso");
-					subastador.AddBook(book);
+				// Comprobase que se cubriron os campos
+				if (titulo.getText() != "" && precio.getText() != "" && incremento.getText() != "") {
+					// Crease o libro
+                    Libro libro = new Libro(titulo.getText(), Float.parseFloat(precio.getText()), Float.parseFloat(incremento.getText()), "En curso");
+					// Metese na lista do axente (este metodo xa comproba se esta repetido e lanza o comportamento)
+					subastador.AddBook(libro);
+					// Borramos o escrito previamente
 					titulo.setText("");
 					precio.setText("");
 					incremento.setText("");
+					// Repintamos a taboa
+                    model = new ModeloTabla(subastador.getListaSubastas());
+                    table.setModel(model);
+                    System.out.println("Aqui");
+				} else {
+					System.err.println("Debese introducir titulo, precio e incremento");
 				}
 			}
 		});
@@ -111,10 +111,10 @@ public class SubastadorGUI extends JFrame {
 
 	}
 
-	public SubastadorGUI(ArrayList<Book> books, AgenteSubastador subastador) {
+	public SubastadorGUI(ArrayList<Libro> libros, AgenteSubastador subastador) {
 		this();
 		this.subastador = subastador;
-		model = new ModeloTabla(books);
+		model = new ModeloTabla(libros);
 		table.setModel(model);
 	}
 

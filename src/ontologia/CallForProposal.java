@@ -2,24 +2,22 @@ package ontologia;
 
 import jade.content.AgentAction;
 
-@SuppressWarnings("serial")
 public class CallForProposal implements AgentAction {
 
-	private Book book;
+    private Libro libro;
 
-	public CallForProposal() {
+    public CallForProposal() {
+    }
 
-	}
+    public CallForProposal(Libro libro) {
+        this.libro = libro;
+    }
 
-	public CallForProposal(Book book) {
-		this.book = book;
-	}
+    public Libro getLibro() {
+        return this.libro;
+    }
 
-	public Book getBook() {
-		return this.book;
-	}
-
-	public void setBook(Book book) {
-		this.book = book;
-	}
+    public void setLibro(Libro libro) {
+        this.libro = libro;
+    }
 }

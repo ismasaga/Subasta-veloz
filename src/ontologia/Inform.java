@@ -2,25 +2,23 @@ package ontologia;
 
 import jade.content.AgentAction;
 
-@SuppressWarnings("serial")
 public class Inform implements AgentAction {
 
-	private Book book;
+    private Libro libro;
 
-	public Inform() {
+    public Inform() {
+    }
 
-	}
+    public Inform(Libro libro) {
+        this.libro = libro;
+    }
 
-	public Inform(Book book) {
-		this.book = book;
-	}
+    public Libro getLibro() {
+        return libro;
+    }
 
-	public Book getBook() {
-		return book;
-	}
-
-	public void setBook(Book book) {
-		this.book = book;
-	}
+    public void setLibro(Libro libro) {
+        this.libro = libro;
+    }
 
 }

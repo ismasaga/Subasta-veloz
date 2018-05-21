@@ -2,24 +2,22 @@ package ontologia;
 
 import jade.content.AgentAction;
 
-@SuppressWarnings("serial")
 public class RejectProposal implements AgentAction {
 
-	private Book book;
+    private Libro libro;
 
-	public RejectProposal() {
+    public RejectProposal() {
+    }
 
-	}
+    public RejectProposal(Libro libro) {
+        this.libro = libro;
+    }
 
-	public RejectProposal(Book book) {
-		this.book = book;
-	}
+    public Libro getLibro() {
+        return libro;
+    }
 
-	public Book getBook() {
-		return book;
-	}
-
-	public void setBook(Book book) {
-		this.book = book;
-	}
+    public void setLibro(Libro libro) {
+        this.libro = libro;
+    }
 }

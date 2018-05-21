@@ -8,14 +8,13 @@ import jade.content.schema.ConceptSchema;
 import jade.content.schema.ObjectSchema;
 import jade.content.schema.PrimitiveSchema;
 
-@SuppressWarnings("serial")
 public class AuctionOntology extends Ontology {
 
-	// The name identifying this ontology
+	// Nome da ontoloxia
 	public static final String ONTOLOGY_NAME = "Auction-Ontology";
 
-	// Vocabulary
-	public static final String BOOK = "Book";
+	// Vocabulario
+	public static final String BOOK = "Libro";
 	public static final String TITLE = "title";
 	public static final String PRICE = "price";
 	public static final String INCREASE = "increase";
@@ -28,20 +27,20 @@ public class AuctionOntology extends Ontology {
 	public static final String REQUEST = "Request";
 	public static final String INFORM = "Inform";
 
-	// The singleton instance of this ontology
+	// Instancia da ontoloxia
 	private static AuctionOntology theInstance = new AuctionOntology();
 
-	// This is the method to access the singleton auction ontology object
+	// Metodo para obter a referencia a ontoloxia (Singleton)
 	public static AuctionOntology getInstance() {
 		return theInstance;
 	}
 
 	private AuctionOntology() {
-
+		// E unha ontoloxia basica
 		super(ONTOLOGY_NAME, BasicOntology.getInstance());
-
 		try {
-			add(new ConceptSchema(BOOK), Book.class);
+            // Engadimos os libros
+			add(new ConceptSchema(BOOK), Libro.class);
 			ConceptSchema cs = (ConceptSchema) getSchema(BOOK);
 			cs.add(TITLE, (PrimitiveSchema) getSchema(BasicOntology.STRING));
 			cs.add(PRICE, (PrimitiveSchema) getSchema(BasicOntology.FLOAT));

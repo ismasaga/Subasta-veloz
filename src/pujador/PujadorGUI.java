@@ -16,14 +16,12 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import ontologia.Book;
+import ontologia.Libro;
 
-@SuppressWarnings("serial")
 public class PujadorGUI extends JFrame {
 
 	private JPanel contentPane;
-	@SuppressWarnings("unused")
-	private HashMap<Book, String> books;
+	private HashMap<Libro, String> books;
 	private ModeloTabla model;
 	private JTable table;
 	private JLabel lblTtulo;
@@ -106,7 +104,7 @@ public class PujadorGUI extends JFrame {
 		contentPane.add(add);
 	}
 
-	public PujadorGUI(HashMap<Book, String> books, AgentePujador pujador) {
+	public PujadorGUI(HashMap<Libro, String> books, AgentePujador pujador) {
 		this();
 		this.books = books;
 		this.pujador = pujador;

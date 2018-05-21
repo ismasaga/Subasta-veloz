@@ -4,15 +4,14 @@ import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
 
-import ontologia.Book;
+import ontologia.Libro;
 
-@SuppressWarnings("serial")
 public class ModeloTabla extends AbstractTableModel {
 
-	public ArrayList<Book> books;
+	public ArrayList<Libro> libros;
 
-	public ModeloTabla(ArrayList<Book> books) {
-		this.books = books;
+	public ModeloTabla(ArrayList<Libro> libros) {
+		this.libros = libros;
 		fireTableDataChanged();
 	}
 
@@ -45,18 +44,18 @@ public class ModeloTabla extends AbstractTableModel {
 
 	@Override
 	public int getRowCount() {
-		return books.size();
+		return libros.size();
 	}
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		switch (columnIndex) {
 		case 0:
-			return books.get(rowIndex).getTitle();
+			return libros.get(rowIndex).getTitle();
 		case 1:
-			return books.get(rowIndex).getPrice();
+			return libros.get(rowIndex).getPrice();
 		case 2:
-			return books.get(rowIndex).getWinner();
+			return libros.get(rowIndex).getWinner();
 		}
 		return "default";
 	}
@@ -66,16 +65,16 @@ public class ModeloTabla extends AbstractTableModel {
 		return super.isCellEditable(rowIndex, columnIndex);
 	}
 
-	public void changeStatus(Book book) {
+	public void changeStatus(Libro libro) {
 		int i = 0;
 		int temp = 0;
-		for (Book b : books) {
-			if (b.equals(book)) {
+		for (Libro b : libros) {
+			if (b.equals(libro)) {
 				temp = i;
 			}
 			i++;
 		}
-		books.set(temp, book);
+		libros.set(temp, libro);
 		fireTableDataChanged();
 	}
 }

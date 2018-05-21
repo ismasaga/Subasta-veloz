@@ -2,35 +2,33 @@ package ontologia;
 
 import jade.content.AgentAction;
 
-@SuppressWarnings("serial")
 public class Propose implements AgentAction {
 
-	private Boolean answer;
-	private Book book;
+    private Boolean answer;
+    private Libro libro;
 
-	public Propose() {
+    public Propose() {
+    }
 
-	}
+    public Propose(Boolean answer, Libro libro) {
+        this.answer = new Boolean(answer);
+        this.libro = libro;
+    }
 
-	public Propose(Boolean answer, Book book) {
-		this.answer = new Boolean(answer);
-		this.book = book;
-	}
+    public Libro getLibro() {
+        return libro;
+    }
 
-	public Book getBook() {
-		return book;
-	}
+    public Boolean getAnswer() {
+        return answer;
+    }
 
-	public Boolean getAnswer() {
-		return answer;
-	}
+    public void setLibro(Libro libro) {
+        this.libro = libro;
+    }
 
-	public void setBook(Book book) {
-		this.book = book;
-	}
-
-	public void setAnswer(Boolean answer) {
-		this.answer = answer;
-	}
+    public void setAnswer(Boolean answer) {
+        this.answer = answer;
+    }
 
 }
